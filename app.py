@@ -3,12 +3,14 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
+# @todo get from environment
+app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://flask_poc:password@localhost:5432/flask_db"
 
 with app.app_context():
     db = SQLAlchemy(app)
 
 class Todo(db.Model):
+    __tablename__ = 'tasks'
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.String(200), nullable=False)
     date_created = db.Column(db.DateTime, default=datetime.utcnow)
