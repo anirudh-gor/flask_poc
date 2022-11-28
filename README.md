@@ -1,3 +1,6 @@
-flask app poc code
+flask app poc for GSB BFF
 
-replaced sqlite with postgres
+feature change log:
+- added /recommend API (API aggregation and JSON response)
+- use psql as db
+- vanilla app 'todo list'
