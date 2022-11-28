@@ -1,4 +1,5 @@
 from flask import Flask, render_template, url_for, request, redirect
+import requests, json, urllib.parse, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
@@ -59,6 +60,31 @@ def update(id):
 
     else:
         return render_template('update.html', task=task)
+
+def get_genere():
+    url = "https://binaryjazz.us/wp-json/genrenator/v1/genre/"
+    response = requests.get(url)
+    data = response.json()
+    return data
+
+def get_song(genere):
+    url = 'https://itunes.apple.com/search?'
+    params = {'term': genere, 'limit': 1}
+    url = url + urllib.parse.urlencode(params)
+    response = requests.get(url)
+    return response.json()
+
+@app.route('/recommend', methods=['GET'])
+def reommend():
+    genere = get_genere()
+    song = get_song(genere)
+    song['recom_genere']=genere
+    response = app.response_class(
+        response=json.dumps(song),
+        status=200,
+        mimetype='application/json'
+    )
+    return response
 
 if __name__ == "__main__":
     app.run(debug=True)
