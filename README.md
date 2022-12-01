@@ -1,7 +1,12 @@
 flask app poc for GSB BFF
 
 feature change log:
-- added '/recommend' API
+- added before/after request decorators
+- added CORS, CSRF middlewares
+- added capability to parse and validate requests
+- refactor using flask_restful
+- added '/solutions' and '/solution/<sol_name>' endpoints
+- added '/recommend' endpoint
   - ability to aggregate responses across multiple APIs
   - use public APIs to recommend a random song
   - API return as JSON format
