@@ -1,8 +1,8 @@
 from flask_restful import Resource, reqparse, abort
 from models.solution import SolutionModel
 from models.region import RegionModel
-# from utils.common_utils import ParseResponse
-import jsonify
+from flask import request
+from flask import current_app as app
 
 class Solution(Resource):
     parser = reqparse.RequestParser(bundle_errors=True)
@@ -25,7 +25,6 @@ class Solution(Resource):
         return {'message': 'Solution does not exist'}, 404
 
     def post(self, name):
-
         if SolutionModel.search_by_name(name):
             return {'message': "Solution with name '{}' already exists.".format(name)}, 400
         data = Solution.parser.parse_args()
@@ -62,6 +61,7 @@ class Solution(Resource):
 
 class SolutionList(Resource):
     def get(self):
+        app.logger.info("processing request")
         solutions = SolutionModel.query.all()
         if solutions:
             response = {'solutions': [solution.to_json() for solution in solutions]}

@@ -1,10 +1,7 @@
 from flask import Flask
 from flask_cors import CORS
-from flask_wtf.csrf import CSRFProtect
-from flask_sqlalchemy import SQLAlchemy
 from flask_restful import Api
 from resources.solution import Solution, SolutionList
-from models.region import RegionModel
 
 # app and db setup
 app = Flask(__name__)
@@ -19,7 +16,7 @@ CORS(app, origins="http://localhost:8000", allow_headers=[
 
 @app.before_first_request
 def create_tables():
-    from db import db
+    from app.db import db
     db.init_app(app)
     db.create_all()
 
@@ -31,10 +28,11 @@ def create_tables():
 # def pre_request_handling_v2():
 #     app.logger.info("pre request proc 2")
 
-# @app.after_request
-# def post_request_handling(ret):
-#     app.logger.info("post request proc")
-#     return ret
+@app.after_request
+def post_request_handling(ret):
+    app.logger.info("post request proc")
+    app.logger.info("post request proc 2")
+    return ret
 
 # Api resource setup
 api = Api(app)
