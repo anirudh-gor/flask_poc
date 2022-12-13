@@ -1,5 +1,4 @@
-name: ci
-run-name: Building image from commit ${{ inputs.commit-id }}
+name: build and push docker image
 
 on:
   push:
@@ -27,5 +26,6 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v3
         with:
+          context: "{{defaultContext}}:app"
           push: true
           tags: user/app:latest
