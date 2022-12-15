@@ -1,12 +1,12 @@
-name: ci
-run-name: Building image from commit ${{ inputs.commit-id }}
+name: docker build and push
 
 on:
   workflow_dispatch:
     inputs:
-      commit-id:
-        description: "Commit id"
+      checkout_to:
+        description: "Specify Commit / Tag / Branch"
         required: true
+        default: 'gh_actions'
 
 permissions:
   contents: read
@@ -18,7 +18,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          ref: ${{ inputs.commit-id }}
+          ref: ${{ inputs.checkout_to }}
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -36,4 +36,4 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           push: true
-          tags: user/app:${{ inputs.commit-id }}
+          tags: user/app:${{ inputs.checkout_to }}
